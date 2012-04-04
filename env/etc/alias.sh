@@ -1,8 +1,10 @@
 #
-# Aliases that source things from custom/env
+# Our aliases
 #
 
-alias setversion="source ${ENV_SCRIPTS_DIR}/setversion.sh \"\$@\""
+alias setversion=". \"$ENV_SCRIPTS_DIR/setversion.sh\" \"\$@\""
+alias setproject=". \"$ENV_SCRIPTS_DIR/setproject.sh\" \"\$@\""
+alias go=". \"$ENV_SCRIPTS_DIR/go.sh\" \"\$@\""
 
 #
 # Other aliases

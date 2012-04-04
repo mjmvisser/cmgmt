@@ -14,14 +14,10 @@ umask 002
 
 # bash dereferences the home directory if it is a link
 # here you can translate the dereferenced path back to the "real" path
-# for exmaple, if /home gets dereferenced to /fileserver/net/home, you'd use this:
+# for example, if /home gets dereferenced to /fileserver/net/home, you'd use this:
 #export PWD=`pwd`
 #cd ${PWD##/fileserver/net}
 #export OLDPWD=$PWD
-
-export ENV_DIR=/studio/custom/env
-export ENV_SCRIPTS_DIR=${ENV_DIR}/scripts
-export ENV_ETC_DIR=${ENV_DIR}/etc
 
 # save the path in DEFAULT_PATH to prevent ever-expanding PATH variables. 
 export DEFAULT_PATH=$PATH
@@ -37,6 +33,11 @@ if [ "$OS" = "Darwin" ]; then
 else
     export TMPDIR=/usr/tmp
 fi
+
+# globals
+export ENV_DIR=$HOME/workspace/carey/cmgmt/env
+export ENV_SCRIPTS_DIR=${ENV_DIR}/scripts
+export ENV_ETC_DIR=${ENV_DIR}/etc
 
 # Continue sourcing the environment. 
 source ${ENV_ETC_DIR}/studio.sh
