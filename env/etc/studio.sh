@@ -3,6 +3,7 @@
 
 # globals
 export PROD_DIR=/tmp/prod
+export OCIO=/Volumes/Om/Users/mark/workspace/carey/cmgmt/spi-vfx/config.ocio
 
 # reset path
 export PATH=$DEFAULT_PATH
@@ -18,10 +19,12 @@ export MAYA_VERSION=2011
 export NUKE_VERSION=6.3v2
 
 # default project
-if [ -r "$HOME/.project" ]; then
-    export PROJECT=$(cat "$HOME/.project")
+if [ -r "$HOME/.config" ]; then
+    . "$HOME/.config"
 else
+    # minimal state for defaults
 	export PROJECT=default
+	unset SEQ SHOT TYPE ASSET DEPT 
 fi
 
 # project setup (including asset/sequence/shot/work/etc)

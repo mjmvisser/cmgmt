@@ -64,7 +64,7 @@ if [[ "$1" = "-?" || "$1" = "-h" || $# -lt 2 || $# -gt 3 ]]; then
     return
 fi
 
-# clear vars
+# clear state
 unset SEQ SHOT TYPE ASSET DEPT
 
 # figure out what to do
@@ -106,6 +106,16 @@ elif [[ $# -eq 3 ]]; then
         print_usage
     fi
 fi
+
+# save state
+echo "PROJECT=$PROJECT" > $HOME/.config
+for var in SEQ SHOT TYPE ASSET DEPT; do
+	if [[ -n "${!var}" ]]; then
+	    echo "${var}=${!var}" >> $HOME/.config
+	else
+	    echo "unset ${var}" >> $HOME/.config
+	fi
+done
 
 # re-source the environment
 . ${ENV_ETC_DIR}/studio.sh

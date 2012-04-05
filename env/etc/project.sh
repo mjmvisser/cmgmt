@@ -2,15 +2,6 @@
 
 export PROJECT_DIR=$PROD_DIR/$PROJECT
 
-# source project overrides -- which may include app version overrides
-if [[ -d "$PROJECT_DIR/etc/" ]]; then
-    for f in "$PROJECT_DIR/etc/*.sh" ; do
-        if [[ -r "$f" ]]; then
-            . "$f"
-        fi
-    done
-fi
-
 unset SEQ_DIR SHOT_DIR TYPE_DIR ASSET_DIR DEPT_DIR WORK_DIR
 
 if [[ -n "$SEQ" ]]; then
@@ -40,3 +31,14 @@ elif [[ -n "$TYPE" ]]; then
         fi
     fi
 fi
+
+# source overrides -- which may include app version overrides
+# WARNING: make sure any overrides are cleared in studio.sh, or they
+# will be sticky!
+# order is important here
+for var in PROJECT_DIR SEQ_DIR TYPE_DIR SHOT_DIR ASSET_DIR DEPT_DIR; do
+    config=${!var}/.config
+	if [[ -r "$config" ]]; then
+        . "$config"
+	fi
+done

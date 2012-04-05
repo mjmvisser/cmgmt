@@ -14,9 +14,11 @@ function _dirnames()
 	    
 	    # strip the leading directories
 	    result=( ${result[@]##*/} )
+	    
+	    # filter out luts (add other subdirs here as necessary)
+	    result=( $( for i in ${result[@]}; do echo $i; done | egrep -i 'luts' ) )
 	fi
 	
     # assign the result back to the input array
     eval "$1=( ${result[@]} )"
 }
-

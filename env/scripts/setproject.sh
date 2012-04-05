@@ -37,17 +37,24 @@ if [ "$!" = "-?" -o "$1" = "-h" -o $# -ne 1 -o ! -d "$PROD_DIR/$1" ]; then
     return
 fi
 
-# stash it so it sticks
-echo $PROJECT > $HOME/.project
-
-
 if [[ $PROJECT != $1 ]]; then
+	# only change things if a different project is specified
+
 	# set the project variable
 	export PROJECT=$1
 
 	# unset state
 	unset SEQ SHOT TYPE ASSET DEPT 
 	
-	# re-source the environment
-	. $ENV_ETC_DIR/studio.sh
+    # save state
+    echo "PROJECT=$PROJECT" > $HOME/.config
+    echo "unset SEQ" >> $HOME/.config
+    echo "unset SHOT" >> $HOME/.config
+    echo "unset TYPE" >> $HOME/.config
+    echo "unset ASSET" >> $HOME/.config
+    echo "unset DEPT" >> $HOME/.config
 fi
+
+	
+# re-source the environment, even if nothing changed, to be consistent
+. $ENV_ETC_DIR/studio.sh
