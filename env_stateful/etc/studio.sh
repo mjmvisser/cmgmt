@@ -19,8 +19,8 @@ export MAYA_VERSION=2011
 export NUKE_VERSION=6.3v2
 
 # default project
-if [ -r "$HOME/.config" ]; then
-    . "$HOME/.config"
+if [ -r "$HOME/.state" ]; then
+    . "$HOME/.state"
 else
     # minimal state for defaults
 	export PROJECT=default
@@ -30,14 +30,18 @@ fi
 # project setup (including asset/sequence/shot/work/etc)
 . "$ENV_ETC_DIR/project.sh"
 
+# user's custom environment settings.
+# this may include specific app version overrides, so we source it
+# before app setup
+# if login.sh is sourced FROM $HOME/.bashrc, replace this with 
+# $HOME/.config
+if [ -e "$HOME/.bashrc" ] ; then
+    . "$HOME/.bashrc"
+fi
+
 # source app setup
 for app in "$ENV_ETC_DIR/apps.d/*.sh" ; do
     if [ -r "$app" ]; then
         . "$app"
     fi
 done
-
-# Souce the user's custom environment settings.
-if [ -e "$HOME/.bashrc" ] ; then
-    . "$HOME/.bashrc"
-fi

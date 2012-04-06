@@ -1,4 +1,4 @@
-# /etc/profile.d/profile.sh
+# install this file as /etc/profile.d/profile.sh
 # This file initiates the setting of the environment.
 # It should be sourced last by /etc/profile.
 
