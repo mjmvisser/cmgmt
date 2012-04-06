@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# check for a valid app
+if [[ ! -x $(which "$1") ]]; then
+    echo "Usage: run APP [args]"
+    exit 1
+fi
+
+# build an array of .config files from current working directory to root
+configs=()
+cwd=$(pwd)
+while [[ "$cwd" != "" ]]; do
+    if [[ -r "$cwd/.config" ]]; then
+        configs+=( $cwd/.config )
+    fi
+    
+    # strip of last subdir
+    cwd=${cwd%/*}
+done
+
+# source them in reverse order
+for (( i=${#configs[@]}-1; i>=0; i-- )); do
+    . ${configs[$i]}
+done
+
+exec "$@"
+    
