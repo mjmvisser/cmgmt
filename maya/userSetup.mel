@@ -1,0 +1,59 @@
+proc string[] getDisplays()
+{
+    return python("import PyOpenColorIO as OCIO; config=OCIO.GetCurrentConfig(); config.getDisplays()");
+}
+
+proc string[] getViews(string $display)
+{
+    return python("import PyOpenColorIO as OCIO; config=OCIO.GetCurrentConfig(); config.getViews('" + $display + "')");
+}
+
+proc addDisplayMenuToRenderView()
+{
+    string $toolbar = "renderViewToolbar";
+    
+    int $iconSize = 26;
+    
+    setParent $toolbar;
+    
+    separator -height $iconSize -horizontal false -style single rvSeparatorDisplay;
+    
+    optionMenu -height $iconSize
+        -label "Display"
+        -annotation "Select Display"
+        -cc  "updateCurrentDisplay(\"displaySelOptionMenu\")"
+        -parent $toolbar
+        displaySelOptionMenu;
+    
+    string $display;
+    string $view;
+    for($display in getDisplays())
+    {
+        for($view in getViews($display))
+        {
+            string $viewUIName = ($view + " (" + $display + ")");
+            menuItem -l $viewUIName -enableCommandRepeat false ("displaySelOptionMenuItem" + $display + $view);
+        }
+    }
+}
+
+global proc cmgmtAddRenderWindowPanel(string $editor)
+{
+    addRenderWindowPanel($editor);
+    addDisplayMenuToRenderView();
+}
+
+# shim the callback so we can add our own UI
+scriptedPanelType -e -addCallback "cmgmtAddRenderWindowPanel" renderWindowPanel;
+
+
+// render settings
+setAttr "defaultRenderGlobals.colorProfileEnabled" 1;
+setAttr "defaultRenderGlobals.renderingColorProfile" 2; // linear
+setAttr "defaultRenderGlobals.inputColorProfile" 3;     // sRGB
+setAttr "defaultRenderGlobals.outputColorProfile" 2;    // linear
+
+// renderView
+setAttr "defaultViewColorManager.imageColorProfile" 2; // linear
+setAttr "defaultViewColorManager.displayColorProfile" 3; // sRGB
+
