@@ -104,7 +104,7 @@ global proc cmgmtClearViewColorSpace()
     setAttr -type "string" "defaultViewColorManager.lutFile" "";
     if (attributeExists("ocioColorSpace", "defaultViewColorManager"))
         deleteAttr "defaultViewColorManager.ocioColorSpace";
-    setAttr "defaultViewColorManager.imageColorProfile" 3;   // sRGB 
+    setAttr "defaultViewColorManager.imageColorProfile" 2;   // linear 
     setAttr "defaultViewColorManager.displayColorProfile" 3; // sRGB
 }
 
@@ -151,4 +151,4 @@ setAttr "defaultRenderGlobals.renderingColorProfile" 2; // linear
 setAttr "defaultRenderGlobals.inputColorProfile" 3;     // sRGB
 setAttr "defaultRenderGlobals.outputColorProfile" 2;    // linear
 
-setAttr "miDefaultFramebuffer.datatype" 16;
+//setAttr "miDefaultFramebuffer.datatype" 16;
